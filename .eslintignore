@@ -1,0 +1,7 @@
+node_modules
+.DS_Store
+dist
+demo-platform-web
+dist-ssr
+*.local
+node_modules/*
