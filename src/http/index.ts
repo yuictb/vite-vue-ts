@@ -1,16 +1,14 @@
-import axios from "axios"
+import axios, { AxiosResponse, InternalAxiosRequestConfig } from "axios"
 import { ElLoading } from "element-plus"
 import { ElMessage } from "element-plus"
 import { proxyReplace } from "./proxyReplace"
-import router from "@/router/index"
 
 axios.defaults.withCredentials = true
-// 请求超时时间5s
 axios.defaults.timeout = 5 * 1000
 
 let loading: any
 axios.interceptors.request.use(
-  (config: any) => {
+  (config: InternalAxiosRequestConfig) => {
     loading = ElLoading.service({
       lock: true,
       text: "加载中...",
@@ -26,15 +24,14 @@ axios.interceptors.request.use(
 )
 
 axios.interceptors.response.use(
-  (response) => {
-    console.log(response)
+  (response: AxiosResponse) => {
     loading.close()
     const { status, data } = response
     if (status >= 200 && status < 300) {
       return Promise.resolve(data)
     } else {
       ElMessage.error(data.msg || "请求信息错误")
-      return
+      return Promise.reject(data.msg)
     }
   },
   (error) => {
@@ -44,9 +41,6 @@ axios.interceptors.response.use(
       switch (error.response.status) {
         case 403:
           msg = "登录信息已过期,请重新登录"
-          router.replace({
-            path: "/login"
-          })
           break
         case 404:
           msg = "接口请求不存在!错误码【404】。"

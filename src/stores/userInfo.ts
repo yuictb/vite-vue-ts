@@ -5,8 +5,8 @@ export const useUserInfo = defineStore("counter", () => {
   const info = reactive({
     detail: {}
   })
-  function setInfo(payload: any) {
-    console.log(payload)
+  async function setInfo(payload: any) {
+    info.detail = await payload
   }
 
   return { info, setInfo }
