@@ -1,13 +1,13 @@
 // 保存用户信息
-export const setUserInfo = (obj) => {
+export const setUserInfo = (obj: any) => {
   return sessionStorage.setItem("userInfo", JSON.stringify(obj))
 }
 // 获取用户信息
 export const getUserInfo = () => {
-  return JSON.parse(sessionStorage.getItem("userInfo")) || {}
+  return JSON.parse(sessionStorage.getItem("userInfo") || "{}")
 }
 // 设置token
-export const setToken = (jwt) => {
+export const setToken = (jwt: string) => {
   return sessionStorage.setItem("token", jwt)
 }
 // 获取token
